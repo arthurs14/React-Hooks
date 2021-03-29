@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import IngredientForm from './IngredientForm';
 import IngredientList from './IngredientList';
@@ -23,9 +23,9 @@ const Ingredients = () => {
     });
   }, []);
 
-  const filteredIngredientsHandler = (ingredients) => {
-    setIngredients(ingredients);
-  };
+  const filteredIngredientsHandler = useCallback(filteredIngredients => {
+    setIngredients(filteredIngredients);
+  }, []);
 
   const addIngredientHandler = ingredient => {
     fetch('https://ingredient-list-34639-default-rtdb.firebaseio.com/ingredients.json', {
