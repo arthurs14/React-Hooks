@@ -19,9 +19,9 @@ const Ingredients = () => {
           amount: responseData[key].amount,
         });
       }
-      //setIngredients(loadedIngredients);
+      setIngredients(loadedIngredients);
     });
-  });
+  }, []);
 
   const addIngredientHandler = ingredient => {
     fetch('https://ingredient-list-34639-default-rtdb.firebaseio.com/ingredients.json', {
