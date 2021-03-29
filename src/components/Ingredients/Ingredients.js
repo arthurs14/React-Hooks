@@ -23,6 +23,10 @@ const Ingredients = () => {
     });
   }, []);
 
+  const filteredIngredientsHandler = (ingredients) => {
+    setIngredients(ingredients);
+  };
+
   const addIngredientHandler = ingredient => {
     fetch('https://ingredient-list-34639-default-rtdb.firebaseio.com/ingredients.json', {
       method: 'POST',
@@ -47,7 +51,7 @@ const Ingredients = () => {
       <IngredientForm onAddIngredient={addIngredientHandler} />
 
       <section>
-        <Search />
+        <Search onLoadIngredients={filteredIngredientsHandler} />
         <IngredientList 
           ingredients={ingredients} 
           onRemoveItem={removeIngredientHandler} />
