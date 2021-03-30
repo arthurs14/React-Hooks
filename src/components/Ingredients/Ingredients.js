@@ -2,11 +2,13 @@ import React, { useState, useCallback } from 'react';
 
 import IngredientForm from './IngredientForm';
 import IngredientList from './IngredientList';
+import ErrorModal from '../UI/ErrorModal';
 import Search from './Search';
 
 const Ingredients = () => {
   const [ingredients, setIngredients] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState();
 
   const filteredIngredientsHandler = useCallback(filteredIngredients => {
     setIngredients(filteredIngredients);
@@ -37,11 +39,19 @@ const Ingredients = () => {
     }).then(response => {
       setLoading(false);
       setIngredients(prevIngredients => prevIngredients.filter(ingredient => ingredient.id !== id));
+    }).catch(error => {
+      setError(error.message);
     });
-  }
+  };
+
+  const clearError = () => {
+    setError(null);
+    setLoading(false);
+  };
 
   return (
     <div className="App">
+      {error && <ErrorModal onClose={clearError}>{error}</ErrorModal>}
       <IngredientForm 
         onAddIngredient={addIngredientHandler}
         loading={loading} />
