@@ -8,7 +8,7 @@ const Search = React.memo(({ onLoadIngredients }) => {
   const inputRef = useRef();
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       if (filter === inputRef.current.value) {
         const query = filter.length === 0 ? '' : `?orderBy="title"&equalTo="${filter}"` ;
   
@@ -27,6 +27,12 @@ const Search = React.memo(({ onLoadIngredients }) => {
         });
       }
     }, 500);
+
+    // clean up function
+    return () => {
+      // one ongoing timer and not multiple
+      clearTimeout(timer);
+    };
   }, [filter, onLoadIngredients, inputRef]);
 
   return (
