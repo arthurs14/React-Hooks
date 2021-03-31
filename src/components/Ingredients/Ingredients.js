@@ -19,7 +19,7 @@ const ingredientReducer = (currIngredients, action) => {
 };
 
 const Ingredients = () => {
-  const [userIngredients, dispatch] = useReducer(ingredientReducer, []);
+  const [ingredients, dispatch] = useReducer(ingredientReducer, []);
   // const [ingredients, setIngredients] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
@@ -44,7 +44,10 @@ const Ingredients = () => {
       //     ...prevIngredients, 
       //     { id: responseData.name, ...ingredient },
       // ]);
-      dispatch({type: 'ADD', ingredient: { id: responseData.name, ...ingredient }});
+      dispatch({
+        type: 'ADD', 
+        ingredient: { id: responseData.name, ...ingredient },
+      });
     });
   }
 
@@ -54,7 +57,11 @@ const Ingredients = () => {
       method: 'DELETE',
     }).then(response => {
       setLoading(false);
-      setIngredients(prevIngredients => prevIngredients.filter(ingredient => ingredient.id !== id));
+      // setIngredients(prevIngredients => prevIngredients.filter(ingredient => ingredient.id !== id));
+      dispatch({
+        type: 'DELETE',
+        id: id, 
+      });
     }).catch(error => {
       setError(error.message);
     });
