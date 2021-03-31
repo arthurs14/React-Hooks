@@ -14,12 +14,26 @@ const ingredientReducer = (currIngredients, action) => {
     case 'DELETE':
       return currIngredients.filter(ing => ing.id !== action.id);
     default:
-      throw new Error('Shouw not get there!');
+      throw new Error('Should not get there!');
+  }
+};
+
+const httpReducer = (httpState, action) => {
+  switch (action.type) {
+    case 'SEND':
+      return { loading: true, error: null };
+    case 'RESPONSE':
+      return { ...httpState, loading: false };
+    case 'ERROR':
+      return { loading: false, error: action.error };
+    default:
+      throw new Error('Should not be reached!');
   }
 };
 
 const Ingredients = () => {
   const [ingredients, dispatch] = useReducer(ingredientReducer, []);
+  const [] = useReducer(httpReducer, { loading: false, error: null });
   // const [ingredients, setIngredients] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
