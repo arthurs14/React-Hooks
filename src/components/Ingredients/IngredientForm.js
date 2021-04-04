@@ -7,6 +7,7 @@ import './IngredientForm.css';
 const IngredientForm = React.memo(({ onAddIngredient, loading }) => {
   const [enteredTitle, setEnteredTitle] = useState('');
   const [enteredAmount, setEnteredAmount] = useState('');
+  console.log('RENDERING INGREDIENT FORM');
 
   const submitHandler = event => {
     event.preventDefault();

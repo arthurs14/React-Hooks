@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useCallback } from 'react';
+import React, { useReducer, useCallback } from 'react';
 
 import IngredientForm from './IngredientForm';
 import IngredientList from './IngredientList';
@@ -45,7 +45,7 @@ const Ingredients = () => {
     dispatch({type: 'SET', ingredients: filteredIngredients})
   }, []);
 
-  const addIngredientHandler = ingredient => {
+  const addIngredientHandler = useCallback(ingredient => {
     //setLoading(true);
     dispatchHttp({ type: 'SEND' });
 
@@ -68,9 +68,9 @@ const Ingredients = () => {
         ingredient: { id: responseData.name, ...ingredient },
       });
     });
-  }
+  }, []);
 
-  const removeIngredientHandler = (id) => {
+  const removeIngredientHandler = useCallback((id) => {
     // setLoading(true);
     dispatchHttp({ type: 'SEND' });
 
@@ -89,7 +89,7 @@ const Ingredients = () => {
       // setError(error.message);
       dispatchHttp({ type: 'ERROR', error: error.message  });
     });
-  };
+  }, []);
 
   const clearError = () => {
     // setError(null);
