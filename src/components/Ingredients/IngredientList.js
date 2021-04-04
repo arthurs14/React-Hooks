@@ -2,6 +2,7 @@ import React from 'react';
 
 import './IngredientList.css';
 
+// wrapping in React.memo will wait for a full change instead of waiting on something that changes
 const IngredientList = props => {
   console.log('RENDERING INGREDIENT LIST');
   return (
