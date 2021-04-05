@@ -1,4 +1,4 @@
-import React, { useReducer, useCallback, useMemo } from 'react';
+import React, { useReducer, useEffect, useCallback, useMemo } from 'react';
 
 import IngredientForm from './IngredientForm';
 import IngredientList from './IngredientList';
@@ -21,11 +21,22 @@ const ingredientReducer = (currIngredients, action) => {
 
 const Ingredients = () => {
   const [ingredients, dispatch] = useReducer(ingredientReducer, []);
-  const { isLoading, error, data, sendRequest } = useHttp();
+  const { isLoading, error, data, sendRequest, extra, identifier } = useHttp();
 
   // const [ingredients, setIngredients] = useState([]);
   // const [loading, setLoading] = useState(false);
   // const [error, setError] = useState();
+
+  useEffect(() => {
+    if (!isLoading && !error && identifier === 'REMOVE_INGREDIENT') {
+      dispatch({ type: 'DELETE', id: extra });
+    } else if (!isLoading && !error && identifier === 'ADD_INGREDIENT') {
+      dispatch({
+        type: 'ADD',
+        ingredient: { id: data.name, ...extra },
+      });
+    }
+  }, [isLoading, data, extra, identifier, error]);
 
   const filteredIngredientsHandler = useCallback(filteredIngredients => {
     // setIngredients(filteredIngredients);
@@ -33,6 +44,13 @@ const Ingredients = () => {
   }, []);
 
   const addIngredientHandler = useCallback(ingredient => {
+    sendRequest(
+      `https://ingredient-list-34639-default-rtdb.firebaseio.com/ingredients.json`,
+      'POST',
+      JSON.stringify(ingredient),
+      ingredient,
+      'ADD_INGREDIENT',
+    );
     //setLoading(true);
     // dispatchHttp({ type: 'SEND' });
 
@@ -55,7 +73,7 @@ const Ingredients = () => {
     //     ingredient: { id: responseData.name, ...ingredient },
     //   });
     // });
-  }, []);
+  }, [sendRequest]);
 
   const removeIngredientHandler = useCallback((id) => {
     // setLoading(true);
@@ -80,6 +98,9 @@ const Ingredients = () => {
     sendRequest(
       `https://ingredient-list-34639-default-rtdb.firebaseio.com/ingredients/${id}.json`,
       'DELETE',
+      null,
+      id,
+      'REMOVE_INGREDIENT',
     );
   }, [sendRequest]);
 
